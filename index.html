@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Birthday Website Generator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <section id="hero">
+    <div class="hero-content">
+      <h1>Create Your Birthday Joy!</h1>
+      <p>Design a personalized birthday website in seconds.</p>
+      <form id="generator-form">
+        <div class="form-group">
+          <label for="name">Name of Birthday Person:</label>
+          <input type="text" id="name" placeholder="Enter name"/>
+        </div>
+        <div class="form-group">
+          <label for="media">Upload a photo or video:</label>
+          <input type="file" id="media" accept="image/*, video/*"/>
+        </div>
+        <button type="submit" class="generate-btn">Generate Website</button>
+      </form>
+    </div>
+  </section>
+
+  <section id="preview">
+    <h2>Your Preview Will Appear Here 🎉</h2>
+    <div class="preview-grid" id="preview-container"></div>
+  </section>
+</body>
+</html>
