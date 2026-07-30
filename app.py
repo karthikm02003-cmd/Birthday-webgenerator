@@ -1,43 +1,93 @@
-from flask import Flask, render_template, request, redirect, url_for, send_from_directory
+from flask import Flask, render_template, request, redirect, url_for
 import os
 import uuid
+import random
 
 app = Flask(__name__)
-UPLOAD_FOLDER = './uploads'
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp', 'svg', 'mp4', 'mov', 'avi', 'mkv'}
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['UPLOAD_FOLDER'] = 'static/uploads'
+app.static_folder = 'static'  # Ensures CSS is served correctly
 
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.split('.')[-1].lower() in ALLOWED_EXTENSIONS
+# In-memory storage for generated pages
+generated_pages = {}
 
 @app.route('/')
-def home():
+def index():
     return render_template('index.html')
 
-@app.route('/upload', methods=['POST'])
-def upload_file():
-    username = request.form['username']
-    media_file = request.files['media']
+@app.route('/generate', methods=['POST'])
+def generate():
+    name = request.form['name']
+    page_id = str(uuid.uuid4().hex)
+    upload_dir = os.path.join(app.config['UPLOAD_FOLDER'], page_id)
+    os.makedirs(upload_dir, exist_ok=True)
     
-    if media_file and allowed_file(media_file.filename):
-        filename = f"{uuid.uuid4()}{os.path.splitext(media_file.filename)[1]}"
-        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        
-        try:
-            media_file.save(file_path)
-        except Exception as e:
-            return f"An error occurred while saving the file: {str(e)}", 500
-            
-        return render_template('greeting.html', username=username, filename=filename)
+    files_saved = []
+    for file in request.files.getlist('media'):
+        if file.filename == '':
+            continue
+        filename = os.path.basename(file.filename)
+        file.save(os.path.join(upload_dir, filename))
+        files_saved.append(filename)
     
-    return "Invalid file type. Supported formats: Images (JPEG, PNG, GIF, SVG, WEBP) and Videos (MP4, MOV, AVI, MKV)", 400
+    generated_pages[page_id] = {'name': name, 'files': files_saved}
+    return redirect(url_for('view_page', id=page_id))
 
-@app.route('/uploads/<filename>')
-def uploaded_file(filename):
-    return send_from_directory(UPLOAD_FOLDER, filename)
+@app.route('/bday/<id>')
+def view_page(id):
+    if id not in generated_pages:
+        return "Page not found", 404
+    data = generated_pages[id]
+    name = data['name']
+    files = data['files']
+    
+    html_content = f'''
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Happy Birthday {name}!</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    </head>
+    <body>
+        <h1 class="birthday-message">Happy Birthday {name}!</h1>
+        
+        <!-- Confetti -->
+        {confetti_html()}
+        
+        <!-- Balloons -->
+        {balloons_html()}
+        
+        <!-- Media -->
+        {media_html(files, id)}
+    </body>
+    </html>
+    '''
+    return html_content
+
+def confetti_html():
+    html = ''
+    for _ in range(30):
+        x = f"{random.uniform(0, 100):.0f}vw"
+        y = f"{random.uniform(0, 100):.0f}vh"
+        html += f'<div class="confetti" style="left: {x}; top: {y};"></div>\n'
+    return html
+
+def balloons_html():
+    html = ''
+    for _ in range(5):
+        x = f"{random.uniform(0, 100):.0f}vw"
+        y = f"{random.uniform(0, 100):.0f}vh"
+        html += f'<div class="balloon" style="left: {x}; top: {y};"></div>\n'
+    return html
+
+def media_html(files, id):
+    html = ''
+    for filename in files:
+        if filename.lower().endswith(('.png', '.jpg', '.jpeg', '.gif')):
+            html += f'<img src="static/uploads/{id}/{filename}" alt="{filename}" class="birthday-image">\n'
+        elif filename.lower().endswith(('.mp4', '.webm')):
+            html += f'<video controls src="static/uploads/{id}/{filename}" class="birthday-video"></video>\n'
+    return html
 
 if __name__ == '__main__':
     app.run(debug=True)
