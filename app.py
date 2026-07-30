@@ -1,41 +1,43 @@
-from flask import Flask, request, render_template, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, send_from_directory
 import os
-from werkzeug.utils import secure_filename
+import uuid
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = 'uploads'
-app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif', 'mp4', 'avi'}
+UPLOAD_FOLDER = './uploads'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp', 'svg', 'mp4', 'mov', 'avi', 'mkv'}
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 def allowed_file(filename):
     return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
+           filename.split('.')[-1].lower() in ALLOWED_EXTENSIONS
 
 @app.route('/')
-def index():
+def home():
     return render_template('index.html')
 
-@app.route('/upload', methods=['GET', 'POST'])
-def upload():
-    if request.method == 'POST':
-        name = request.form['name']
-        file = request.files['file']
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            media_type = determine_media_type(filename)
-            return render_template('greeting.html', name=name, filename=filename, media_type=media_type)
-        else:
-            return 'Invalid file type. Allowed types: image (png, jpg, gif) or video (mp4, avi)'
-    return render_template('index.html')
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    username = request.form['username']
+    media_file = request.files['media']
+    
+    if media_file and allowed_file(media_file.filename):
+        filename = f"{uuid.uuid4()}{os.path.splitext(media_file.filename)[1]}"
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        
+        try:
+            media_file.save(file_path)
+        except Exception as e:
+            return f"An error occurred while saving the file: {str(e)}", 500
+            
+        return render_template('greeting.html', username=username, filename=filename)
+    
+    return "Invalid file type. Supported formats: Images (JPEG, PNG, GIF, SVG, WEBP) and Videos (MP4, MOV, AVI, MKV)", 400
 
-def determine_media_type(filename):
-    ext = filename.rsplit('.', 1)[1].lower()
-    if ext in {'png', 'jpg', 'jpeg', 'gif'}:
-        return 'image'
-    elif ext in {'mp4', 'avi'}:
-        return 'video'
-    return 'unknown'
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(UPLOAD_FOLDER, filename)
 
 if __name__ == '__main__':
-    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
     app.run(debug=True)
