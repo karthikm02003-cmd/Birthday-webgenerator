@@ -1,57 +1,83 @@
-/* Base styling */
 body {
-    font-family: 'Segoe UI', sans-serif;
-    background-color: #f4f4f4;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    font-family: 'Arial', sans-serif;
+    background-color: #fff8e1;
     margin: 0;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
 }
 
-.upload-container, .greeting-container {
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+h1, h2 {
     text-align: center;
-    width: 100%;
-    max-width: 500px;
-}
-
-h1 {
-    color: #2c3e50;
+    margin-bottom: 20px;
+    color: #e91e63;
 }
 
 form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+    max-width: 400px;
+    margin: 0 auto;
 }
 
-input, button {
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    margin: 5px;
+label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+input[type="text"], input[type="file"] {
+    padding: 8px;
+    margin-bottom: 15px;
+    width: 100%;
 }
 
 button {
-    background-color: #3498db;
+    padding: 10px 20px;
+    background-color: #f4a261;
     color: white;
+    border: none;
     cursor: pointer;
+    border-radius: 5px;
 }
 
 button:hover {
-    background-color: #2980b9;
+    background-color: #e6733c;
 }
 
-video {
-    max-width: 100%;
-    height: auto;
+/* Confetti Effect */
+.confetti {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: #ffeb3b;
+    animation: float 4s linear infinite;
+    z-index: 10;
 }
 
-img {
-    max-width: 100%;
-    height: auto;
+@keyframes float {
+    0% { top: 0; left: 0; }
+    100% { top: 100vh; left: 100vw; }
+}
+
+/* Balloons */
+.balloon {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background: url('static/balloon.png') no-repeat center;
+    animation: bounce 3s ease-in-out infinite;
+    z-index: 5;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+/* Stylish Birthday Message */
+.birthday-message {
+    position: relative;
+    text-align: center;
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
