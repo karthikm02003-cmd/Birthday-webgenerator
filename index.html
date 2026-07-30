@@ -1,60 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Birthday Website Generator</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Upload Media</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Birthday Website Generator</h1>
-            <p>Create a personalized birthday celebration</p>
-        </header>
-
-        <section class="generator-form">
-            <h2>Create Your Birthday Card</h2>
-            <form id="birthdayForm">
-                <div class="form-group">
-                    <label for="name">Celebrant's Name:</label>
-                    <input type="text" id="name" name="name" placeholder="Enter name" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="age">Age (optional):</label>
-                    <input type="number" id="age" name="age" placeholder="Enter age">
-                </div>
-
-                <div class="form-group">
-                    <label for="message">Personal Message:</label>
-                    <textarea id="message" name="message" rows="4" placeholder="Enter a special message..."></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="media">Upload Media (Photos/Videos):</label>
-                    <input type="file" id="media" name="media" accept="image/*,video/*" multiple>
-                    <div id="mediaPreview" class="media-preview"></div>
-                </div>
-
-                <button type="submit" class="generate-btn">Generate Birthday Card</button>
-            </form>
-        </section>
-
-        <section id="celebrationCard" class="celebration-card hidden">
-            <div class="card-content">
-                <div class="balloons"></div>
-                <h2 class="celebration-title">Happy Birthday!</h2>
-                <div class="celebrant-name" id="celebrantName"></div>
-                <div class="age-display" id="ageDisplay"></div>
-                <div class="message-display" id="messageDisplay"></div>
-                <div class="media-gallery" id="mediaGallery"></div>
-                <button id="confettiBtn" class="confetti-btn">🎉 Celebrate! 🎉</button>
-            </div>
-            <canvas id="confettiCanvas"></canvas>
-        </section>
-    </div>
-
-    <script src="script.js"></script>
+    <h1>Upload Your Media</h1>
+    <form action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data">
+        <input type="text" name="name" placeholder="Your name" required><br>
+        <input type="file" name="file" accept="image/*,video/*" required><br>
+        <input type="submit" value="Upload">
+    </form>
 </body>
 </html>
