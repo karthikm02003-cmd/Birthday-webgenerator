@@ -1,43 +1,33 @@
-from flask import Flask, render_template, request, redirect, url_for, send_from_directory
+from flask import Flask, render_template, request, redirect, url_for
 import os
 import uuid
 
 app = Flask(__name__)
-UPLOAD_FOLDER = './uploads'
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp', 'svg', 'mp4', 'mov', 'avi', 'mkv'}
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['UPLOAD_FOLDER'] = os.path.join(app.static_folder, 'uploads')
+os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.split('.')[-1].lower() in ALLOWED_EXTENSIONS
-
-@app.route('/')
-def home():
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    if request.method == 'POST':
+        name = request.form['name']
+        files = request.files.getlist('media')
+        unique_id = uuid.uuid4().hex[:8]
+        upload_dir = os.path.join(app.config['UPLOAD_FOLDER'], unique_id)
+        os.makedirs(upload_dir, exist_ok=True)
+        for file in files:
+            file.save(os.path.join(upload_dir, file.filename))
+        with open(os.path.join(upload_dir, 'name.txt'), 'w') as f:
+            f.write(name)
+        return redirect(url_for('birthday_page', id=unique_id))
     return render_template('index.html')
 
-@app.route('/upload', methods=['POST'])
-def upload_file():
-    username = request.form['username']
-    media_file = request.files['media']
-    
-    if media_file and allowed_file(media_file.filename):
-        filename = f"{uuid.uuid4()}{os.path.splitext(media_file.filename)[1]}"
-        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        
-        try:
-            media_file.save(file_path)
-        except Exception as e:
-            return f"An error occurred while saving the file: {str(e)}", 500
-            
-        return render_template('greeting.html', username=username, filename=filename)
-    
-    return "Invalid file type. Supported formats: Images (JPEG, PNG, GIF, SVG, WEBP) and Videos (MP4, MOV, AVI, MKV)", 400
-
-@app.route('/uploads/<filename>')
-def uploaded_file(filename):
-    return send_from_directory(UPLOAD_FOLDER, filename)
+@app.route('/bday/<id>')
+def birthday_page(id):
+    upload_dir = os.path.join(app.config['UPLOAD_FOLDER'], id)
+    with open(os.path.join(upload_dir, 'name.txt'), 'r') as f:
+        name = f.read().strip()
+    files = [f for f in os.listdir(upload_dir) if os.path.splitext(f)[1].lower() in ['.jpg', '.png', '.mp4', '.mov']]
+    return render_template('bday.html', name=name, files=files, id=id)
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,57 +1,24 @@
-/* Base styling */
 body {
-    font-family: 'Segoe UI', sans-serif;
-    background-color: #f4f4f4;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-}
-
-.upload-container, .greeting-container {
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     text-align: center;
-    width: 100%;
-    max-width: 500px;
-}
-
-h1 {
-    color: #2c3e50;
+    padding: 2em;
+    font-family: Arial, sans-serif;
+    background-color: #fff8f0;
 }
 
 form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+    display: inline;
+    margin: 1em auto;
 }
 
-input, button {
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    margin: 5px;
+input[type="text"], input[type="file"] {
+    padding: 0.5em;
+    margin: 0.5em;
 }
 
 button {
-    background-color: #3498db;
+    padding: 0.5em 1em;
+    background-color: #ff4757;
     color: white;
+    border: none;
     cursor: pointer;
-}
-
-button:hover {
-    background-color: #2980b9;
-}
-
-video {
-    max-width: 100%;
-    height: auto;
-}
-
-img {
-    max-width: 100%;
-    height: auto;
 }

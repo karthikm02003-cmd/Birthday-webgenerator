@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Happy Birthday {{ name }}!</title>
+    <style>
+        body {
+            background: radial-gradient(circle, #ffcccc 0%, #fff 50%);
+            margin: 0;
+            padding: 2em;
+            font-family: 'Comic Sans MS', cursive;
+            color: #333;
+        }
+        .media-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .media img, .media video {
+            max-width: 300px;
+            max-height: 200px;
+            border: 2px solid #ff4757;
+            margin: 10px;
+        }
+        .balloon {
+            position: fixed;
+            width: 150px;
+            height: 200px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="150" height="200" viewBox="0 0 150 200"><polygon points="75,0 150,100 75,200 0,100"/><style>.balloon { fill: #ffc107; }</style></svg>') no-repeat;
+            animation: float 10s linear infinite;
+        }
+        @keyframes float {
+            0% { top: 0; left: 0; }
+            100% { top: 50vh; left: 100vw; }
+        }
+        .confetti {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: #ff4757;
+            animation: drop 3s linear infinite;
+        }
+        @keyframes drop {
+            0% { top: 0; left: 0; }
+            100% { top: 100vh; left: 100vw; }
+        }
+    </style>
+</head>
+<body>
+    <h1>Happy Birthday {{ name }}!</h1>
+    <div class="media-container">
+        {% for file in files %}
+            <div class="media">
+                {% if file.endswith(('.jpg', '.png')) %}
+                    <img src="{{ url_for('static', filename='uploads/' + id + '/' + file) }}" alt="{{ file }}">
+                {% elif file.endswith(('.mp4', '.mov')) %}
+                    <video controls src="{{ url_for('static', filename='uploads/' + id + '/' + file) }}"></video>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+    <div class="balloons">
+        {% for i in range(5) %}
+            <div class="balloon"></div>
+        {% endfor %}
+    </div>
+    <div class="confetti">
+        {% for i in range(20) %}
+            <div class="confetti"></div>
+        {% endfor %}
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const balloons = document.querySelectorAll('.balloon');
+            balloons.forEach(b => {
+                b.style.top = Math.random() * 80 + 'vh';
+                b.style.left = Math.random() * 100 + 'vw';
+            });
+            const confetti = document.querySelectorAll('.confetti');
+            confetti.forEach(c => {
+                c.style.top = Math.random() * 80 + 'vh';
+                c.style.left = Math.random() * 100 + 'vw';
+            });
+        });
+    </script>
+</body>
+</html>

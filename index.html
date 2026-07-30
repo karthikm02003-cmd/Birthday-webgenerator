@@ -1,21 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Media Upload</title>
+    <title>Birthday Website Generator</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="upload-container">
-        <h1>Upload Media</h1>
-        <form action="/upload" method="post" enctype="multipart/form-data">
-            <label for="username">Enter your name:</label><br>
-            <input type="text" id="username" name="username" required><br><br>
-            
-            <label for="media">Select Media (Image/Video):</label><br>
-            <input type="file" id="media" name="media" accept="image/*, video/*" required><br><br>
-            
-            <button type="submit">Upload</button>
-        </form>
-    </div>
+    <h1>Create Your Birthday Website</h1>
+    <form method="POST" enctype="multipart/form-data">
+        <input type="text" name="name" placeholder="Your Name" required><br>
+        <input type="file" name="media" multiple accept="image/*, video/*" required><br>
+        <button type="submit">Generate Website</button>
+    </form>
 </body>
 </html>
