@@ -1,163 +1,288 @@
-/* Festive Color Palette */
-:root {
-  --primary-color: #ff6e6e; /* Rose Red */
-  --secondary-color: #febc04; /* Golden Yellow */
-  --accent-color: #60e8ff; /* Sky Blue */
-  --background-color: #fffbd9; /* Creamy White */
-}
-
-/* Reset & Base Styles */
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
-  background-color: var(--background-color);
-  color: var(--primary-color);
-  line-height: 1.6;
-  padding: 2rem;
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #ff9a9e 0%, #fad0d8 100%);
+    min-height: 100vh;
+    padding: 20px;
 }
 
-/* Hero Section */
-#hero {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 5rem 1rem;
-  text-align: center;
-  background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-  color: white;
-  border-bottom: 5px solid var(--accent-color);
+.container {
+    max-width: 900px;
+    margin: 0 auto;
 }
 
-.hero-content h1 {
-  font-family: 'Dancing Script', cursive;
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
+header {
+    text-align: center;
+    color: white;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
 }
 
-.hero-content p {
-  font-size: 1.2rem;
-  margin-bottom: 2rem;
+header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
 }
 
-/* Form Styling */
-form {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  max-width: 400px;
-  margin: 0 auto;
+header p {
+    font-size: 1.2rem;
+}
+
+.generator-form {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    margin-bottom: 30px;
+}
+
+.generator-form h2 {
+    color: #d6336c;
+    margin-bottom: 20px;
+    text-align: center;
 }
 
 .form-group {
-  position: relative;
+    margin-bottom: 20px;
 }
 
 .form-group label {
-  display: block;
-  margin-bottom: 0.5rem;
-  color: var(--secondary-color);
-  font-weight: 600;
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #555;
 }
 
-.input-field {
-  border: none;
-  border-bottom: 2px solid var(--primary-color);
-  padding: 0.75rem;
-  width: 100%;
-  outline: none;
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px dashed #f0c1d1;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
 }
 
-.input-field:focus {
-  border-bottom-color: var(--accent-color);
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #d6336c;
 }
 
 .generate-btn {
-  grid-column: span 2;
-  padding: 1rem 2rem;
-  background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-  color: white;
-  border: none;
-  font-size: 1.1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
+    background: linear-gradient(to right, #ff7e5f, #feb47b);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    border-radius: 50px;
+    cursor: pointer;
+    display: block;
+    width: 100%;
+    font-weight: bold;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .generate-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+    transform: translateY(-3px);
+    box-shadow: 0 7px 14px rgba(0,0,0,0.2);
 }
 
-/* Preview Section */
-#preview {
-  margin-top: 4rem;
-  text-align: center;
+.media-preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
 }
 
-#preview h2 {
-  color: var(--secondary-color);
-  margin-bottom: 2rem;
+.media-preview-item {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid #f0c1d1;
 }
 
-/* Card Preview (Placeholder) */
-.preview-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-  max-width: 800px;
-  margin: 0 auto;
+.media-preview-item img,
+.media-preview-item video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-.card {
-  background: white;
-  padding: 1.5rem;
-  border: 3px dashed var(--primary-color);
-  border-radius: 15px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+.media-preview-item::after {
+    content: "✕";
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: rgba(255,255,255,0.8);
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
 }
 
-.card h3 {
-  color: var(--primary-color);
-  margin-bottom: 1rem;
+.celebration-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 20px;
+    padding: 40px;
+    text-align: center;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    min-height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-/* Celebratory Animation */
-.generate-btn::after {
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: var(--accent-color);
-  opacity: 0;
-  transform: scale(0);
-  transition: all 0.3s ease;
+.card-content {
+    position: relative;
+    z-index: 10;
+    width: 100%;
 }
 
-.generate-btn:hover::after {
-  opacity: 1;
-  transform: scale(1.2);
+.celebration-title {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    text-shadow: 3px 3px 6px rgba(0,0,0,0.4);
+    animation: pulse 2s infinite;
 }
 
-.card {
-  animation: cardBounce 1.5s infinite alternate;
+.celebrant-name {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
 }
 
-@keyframes cardBounce {
-  0% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-  100% {
-    transform: translateY(5px);
-  }
+.age-display {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    background: rgba(255,255,255,0.2);
+    display: inline-block;
+    padding: 10px 25px;
+    border-radius: 30px;
+}
+
+.message-display {
+    font-size: 1.3rem;
+    margin: 25px 0;
+    line-height: 1.6;
+    background: rgba(255,255,255,0.15);
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.media-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin: 30px 0;
+}
+
+.media-gallery-item {
+    width: 150px;
+    height: 150px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 3px solid rgba(255,255,255,0.5);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.media-gallery-item img,
+.media-gallery-item video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.confetti-btn {
+    background: linear-gradient(to right, #ff6b6b, #feca57);
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    font-size: 1.2rem;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: transform 0.2s;
+    margin-top: 20px;
+}
+
+.confetti-btn:hover {
+    transform: scale(1.05);
+}
+
+.balloons {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.balloon {
+    position: absolute;
+    width: 30px;
+    height: 40px;
+    border-radius: 50% 50% 50% 50%;
+    animation: float 6s infinite ease-in-out;
+}
+
+.balloon::before {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 30px;
+    background: rgba(0,0,0,0.2);
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-20px) rotate(5deg); }
+    50% { transform: translateY(-40px) rotate(0deg); }
+    75% { transform: translateY(-20px) rotate(-5deg); }
+}
+
+@keyframes pulse {
+    0%, 100% { text-shadow: 3px 3px 6px rgba(0,0,0,0.4); }
+    50% { text-shadow: 0 0 20px rgba(255,255,255,0.8), 3px 3px 6px rgba(0,0,0,0.4); }
+}
+
+.hidden {
+    display: none;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .celebration-title {
+        font-size: 2rem;
+    }
+    
+    .celebrant-name {
+        font-size: 1.8rem;
+    }
+    
+    .age-display {
+        font-size: 1.3rem;
+    }
+    
+    .message-display {
+        font-size: 1.1rem;
+    }
 }
