@@ -1,83 +1,24 @@
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #fff8e1;
-    margin: 0;
-    padding: 20px;
-    position: relative;
-    overflow: hidden;
-}
-
-h1, h2 {
     text-align: center;
-    margin-bottom: 20px;
-    color: #e91e63;
+    padding: 2em;
+    font-family: Arial, sans-serif;
+    background-color: #fff8f0;
 }
 
 form {
-    max-width: 400px;
-    margin: 0 auto;
-}
-
-label {
-    display: block;
-    margin-bottom: 10px;
+    display: inline;
+    margin: 1em auto;
 }
 
 input[type="text"], input[type="file"] {
-    padding: 8px;
-    margin-bottom: 15px;
-    width: 100%;
+    padding: 0.5em;
+    margin: 0.5em;
 }
 
 button {
-    padding: 10px 20px;
-    background-color: #f4a261;
+    padding: 0.5em 1em;
+    background-color: #ff4757;
     color: white;
     border: none;
     cursor: pointer;
-    border-radius: 5px;
-}
-
-button:hover {
-    background-color: #e6733c;
-}
-
-/* Confetti Effect */
-.confetti {
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    background: #ffeb3b;
-    animation: float 4s linear infinite;
-    z-index: 10;
-}
-
-@keyframes float {
-    0% { top: 0; left: 0; }
-    100% { top: 100vh; left: 100vw; }
-}
-
-/* Balloons */
-.balloon {
-    position: absolute;
-    width: 50px;
-    height: 50px;
-    background: url('static/balloon.png') no-repeat center;
-    animation: bounce 3s ease-in-out infinite;
-    z-index: 5;
-}
-
-@keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-20px); }
-}
-
-/* Stylish Birthday Message */
-.birthday-message {
-    position: relative;
-    text-align: center;
-    padding: 20px;
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
